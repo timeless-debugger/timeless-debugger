@@ -1,4 +1,5 @@
 <!-- Header Banner -->
+<div align="center">
 ![](https://capsule-render.vercel.app/api?type=rect&color=0:000000,100:003300&height=3&width=100%)
 
 ```
