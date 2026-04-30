@@ -1,22 +1,20 @@
 <!-- Header Banner -->
-<div align="center">
+![](https://capsule-render.vercel.app/api?type=rect&color=0:000000,100:003300&height=3&width=100%)
 
 ```
-███████╗ ██████╗ ██╗   ██╗███╗   ███╗██╗   ██╗ █████╗ ██████╗ ██╗██████╗
-██╔════╝██╔═══██╗██║   ██║████╗ ████║╚██╗ ██╔╝██╔══██╗██╔══██╗██║██╔══██╗
-███████╗██║   ██║██║   ██║██╔████╔██║ ╚████╔╝ ███████║██║  ██║██║██████╔╝
-╚════██║██║   ██║██║   ██║██║╚██╔╝██║  ╚██╔╝  ██╔══██║██║  ██║██║██╔═══╝
-███████║╚██████╔╝╚██████╔╝██║ ╚═╝ ██║   ██║   ██║  ██║██████╔╝██║██║
-╚══════╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝
-```
+ ███████╗ ██████╗ ██╗   ██╗███╗   ███╗██╗   ██╗ █████╗ ██████╗ ██╗██████╗
+ ██╔════╝██╔═══██╗██║   ██║████╗ ████║╚██╗ ██╔╝██╔══██╗██╔══██╗██║██╔══██╗
+ ███████╗██║   ██║██║   ██║██╔████╔██║ ╚████╔╝ ███████║██║  ██║██║██████╔╝
+ ╚════██║██║   ██║██║   ██║██║╚██╔╝██║  ╚██╔╝  ██╔══██║██║  ██║██║██╔═══╝
+ ███████║╚██████╔╝╚██████╔╝██║ ╚═╝ ██║   ██║   ██║  ██║██████╔╝██║██║
+ ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝
 
-```
-███╗   ███╗ █████╗ ███╗   ██╗███╗   ██╗ █████╗
-████╗ ████║██╔══██╗████╗  ██║████╗  ██║██╔══██╗
-██╔████╔██║███████║██╔██╗ ██║██╔██╗ ██║███████║
-██║╚██╔╝██║██╔══██║██║╚██╗██║██║╚██╗██║██╔══██║
-██║ ╚═╝ ██║██║  ██║██║ ╚████║██║ ╚████║██║  ██║
-╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚═╝  ╚═╝
+ ███╗   ███╗ █████╗ ███╗   ██╗███╗   ██╗ █████╗
+ ████╗ ████║██╔══██╗████╗  ██║████╗  ██║██╔══██╗
+ ██╔████╔██║███████║██╔██╗ ██║██╔██╗ ██║███████║
+ ██║╚██╔╝██║██╔══██║██║╚██╗██║██║╚██╗██║██╔══██║
+ ██║ ╚═╝ ██║██║  ██║██║ ╚████║██║ ╚████║██║  ██║
+ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚═╝  ╚═╝
 ```
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&pause=1000&color=00FF41&background=00000000&center=true&vCenter=true&width=700&lines=Aspiring+Ethical+Hacker+%26+Penetration+Tester;CTF+Player+%7C+IDS+Builder+%7C+Security+Researcher;Breaking+Things+to+Make+Them+Stronger;root%40SentinelX%3A~%23+_" alt="Typing SVG" />
@@ -27,7 +25,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-0A0A0A?style=for-the-badge&logo=github&logoColor=00FF41)](https://github.com/timeless-debugger)
 [![TryHackMe](https://img.shields.io/badge/TryHackMe-0A0A0A?style=for-the-badge&logo=tryhackme&logoColor=00FF41)](https://tryhackme.com/p/Soumyadip01)
 [![PicoCTF](https://img.shields.io/badge/PicoCTF-0A0A0A?style=for-the-badge&logo=hackthebox&logoColor=00FF41)](https://play.picoctf.org/users/Soumyadip_01)
-[![HackTheBox](https://img.shields.io/badge/HackTheBox-0A0A0A?style=for-the-badge&logo=hackthebox&logoColor=9FEF00)](https://app.hackthebox.com/profile/overview)
+[![HackTheBox](https://img.shields.io/badge/HackTheBox-0A0A0A?style=for-the-badge&logo=hackthebox&logoColor=9FEF00)](https://profile.hackthebox.com/)
 
 ![Profile Views](https://komarev.com/ghpvc/?username=timeless-debugger&color=00ff41&style=for-the-badge&label=TERMINAL+VISITORS)
 
@@ -36,6 +34,8 @@
 ---
 
 ## `$ whoami`
+
+<img src="https://readme-typing-svg.demolab.com?font=Share+Tech+Mono&size=18&pause=1400&color=00FF41&background=00000000&center=true&vCenter=true&width=800&lines=Hey%2C+I+am+Soumyadip+Manna+%F0%9F%91%BE;I+am+an+Ethical+Hacker+%26+Penetration+Tester;I+build+IDS+systems+that+fight+back+in+real+time;I+hunt+flags+on+PicoCTF%2C+TryHackMe+%26+HackTheBox;I+study+CSE+%40+UEM+%7C+GPA%3A+8.71+%2F+10;My+weapons%3A+Python+%2B+Kali+Linux+%2B+Curiosity;Contact%3A+iamsmanna01%40gmail.com" alt="whoami animation" />
 
 ```bash
 ┌──(soumyadip㉿kali)-[~]
@@ -82,41 +82,14 @@
 
 ## `$ ls -la ~/projects/`
 
-### 🔴 [SentinelX — Real-Time IDS & Automated Response](https://github.com/timeless-debugger)
+<div align="center">
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  root@sentinelx:~# ./sentinelx --status                 │
-│                                                          │
-│  [●] Live traffic capture      → ACTIVE                 │
-│  [●] Threat detection engines  → 12 ALGORITHMS RUNNING  │
-│  [●] Auto-response module      → ARMED                  │
-│  [●] Flask dashboard           → http://0.0.0.0:5000    │
-│  [●] Forensic logging          → ENABLED                │
-│                                                          │
-│  THREATS DETECTED: DDoS · Ransomware · C2 Beaconing     │
-│                    Reverse Shells · Lateral Movement     │
-└─────────────────────────────────────────────────────────┘
-```
+| 🗂️ Project | 🛠️ Tech Stack | Repo Links |
+|:---|:---|:---:|
+| **SentinelX** — Real-Time IDS & Automated Response System | `Python` · `Flask` · `Scapy` · `psutil` · `Watchdog` | [View](https://github.com/timeless-debugger/action-against-cyber-attack) |
+| **Intellizent-zone** — Smart Zone Monitoring System | `Python` · `Flask` · `YOLOv8` · `OpenCV` · `Raspberry Pi` | [View](https://github.com/timeless-debugger/smart_classroom) |
 
-> Built from scratch using **Python · Flask · Scapy · psutil · Watchdog**
-> Validated in a live VirtualBox attack lab. Malicious IPs blocked via Windows Firewall, suspicious processes auto-terminated.
-
----
-
-### 🟢 [Intellizent-zone — Smart Zone Monitoring System](https://github.com/timeless-debugger)
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  root@intellizent:~# ./zone_monitor --init               │
-│                                                          │
-│  [●] Camera feed               → ONLINE                 │
-│  [●] YOLOv8n inference         → RUNNING                │
-│  [●] Zone detection (6 zones)  → MAPPED                 │
-│  [●] Lighting automation       → ACTIVE                 │
-│  [+] Model accuracy            → 91%                    │
-└─────────────────────────────────────────────────────────┘
-```
+</div>
 
 > Zone-based automation using **Python · Flask · YOLOv8 · OpenCV** on Raspberry Pi + webcam. Detects person position across 6 room zones, controls lights & fans automatically.
 
