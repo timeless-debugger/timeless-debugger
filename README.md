@@ -66,6 +66,11 @@
 ---
 
 ## `$ cat /etc/attack-vectors`
+<div align="center">
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&pause=1200&color=00FF41&background=000000&center=true&vCenter=true&width=700&lines=Scanning+attack+surface...;Web+App+Security+%E2%86%92+SQL+Injection%2C+XSS%2C+LFI...;Network+Security+%E2%86%92+Packet+Analysis%2C+IDS...;Cryptography+%E2%86%92+PRNG%2C+Hash+Analysis...;Forensics+%E2%86%92+Steganography%2C+Binary...;All+vectors+mapped.+%5BDONE%5D)](https://github.com/timeless-debugger)
+
+</div>
 
 <div align="center">
 
