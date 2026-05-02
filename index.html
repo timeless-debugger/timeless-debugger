@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soumyadip Manna | timeless-debugger</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00FF41;
+    --cyan: #00FFFF;
+    --red: #FF4444;
+    --orange: #FF9966;
+    --dim: #4a9e60;
+    --bg: #0d0d0d;
+    --bg2: #111a12;
+    --bg3: #0a1410;
+    --border: #1a3a1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #060d06;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    padding: 24px 16px;
+  }
+
+  /* Scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page { width: 100%; max-width: 720px; position: relative; z-index: 1; }
+
+  /* Top bar */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding: 0 4px;
+  }
+  .top-bar .handle { color: var(--dim); font-size: 12px; letter-spacing: 1px; }
+  .top-bar .sep { color: #222; }
+  .top-bar .ip { color: #333; font-size: 11px; }
+  .blink { animation: blink 1s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* Terminal window */
+  .terminal {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0,255,65,0.06), 0 0 80px rgba(0,255,65,0.03);
+  }
+
+  /* Title bar */
+  .titlebar {
+    background: #111;
+    padding: 11px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+  }
+  .dot { width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; }
+  .dot-r { background: #FF5F57; }
+  .dot-y { background: #FEBC2E; }
+  .dot-g { background: #28C840; }
+  .win-title { color: var(--dim); font-size: 12px; margin: 0 auto; letter-spacing: 1.5px; }
+
+  /* Body */
+  .tbody { padding: 22px 26px 26px; }
+
+  /* Prompt */
+  .prompt { font-size: 13px; margin-bottom: 20px; line-height: 1.8; }
+  .p-user { color: var(--cyan); }
+  .p-at { color: #444; }
+  .p-host { color: var(--green); }
+  .p-bracket { color: var(--green); }
+  .p-path { color: var(--cyan); }
+  .p-dollar { color: #555; }
+  .p-cmd { color: #ddd; }
+  .cursor {
+    display: inline-block; width: 9px; height: 15px;
+    background: var(--green); vertical-align: text-bottom;
+    margin-left: 3px; animation: blink 1s step-end infinite;
+  }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 5px; margin-bottom: 22px; flex-wrap: wrap; }
+  .tab {
+    background: #111;
+    border: 1px solid #222;
+    color: #555;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+  .tab:hover { border-color: #2a5a2a; color: #888; }
+  .tab.active { background: #091a09; border-color: var(--green); color: var(--green); }
+  .tab .tbracket { opacity: 0.7; }
+
+  /* Panels */
+  .panel { display: none; animation: fadein 0.18s ease; }
+  .panel.active { display: block; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+  /* Info fields */
+  .field {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid #0e1e0e;
+    font-size: 13px;
+    line-height: 1.5;
+    gap: 0;
+  }
+  .field:last-child { border-bottom: none; }
+  .fk { color: var(--dim); min-width: 96px; flex-shrink: 0; }
+  .fsep { color: #2a2a2a; margin: 0 10px; flex-shrink: 0; }
+  .fv { color: #d4d4d4; }
+  .fv .g { color: var(--green); }
+  .fv .c { color: var(--cyan); }
+  .fv .o { color: var(--orange); }
+
+  /* Section header */
+  .sec-hdr {
+    color: #2a5a2a;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin: 20px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+  }
+  .sec-hdr::after { content: ''; flex: 1; border-top: 1px solid #111f11; }
+
+  /* Tree */
+  .tree { padding: 4px 0; }
+  .ti { display: flex; gap: 10px; padding: 5px 0; font-size: 13px; }
+  .tp { color: #1e3a1e; flex-shrink: 0; }
+  .tt { color: #d4d4d4; }
+  .tt .g { color: var(--green); }
+
+  /* Stats row */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+  .stat {
+    background: #091409;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-n { color: var(--green); font-size: 22px; font-weight: 600; }
+  .stat-l { color: var(--dim); font-size: 10px; margin-top: 3px; letter-spacing: 1px; }
+
+  /* Skill grid */
+  .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .sk {
+    background: #091409;
+    border: 1px solid var(--border);
+    color: var(--green);
+    font-size: 11px;
+    padding: 7px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    cursor: default;
+    transition: all 0.15s;
+  }
+  .sk:hover { background: #0d1f0d; border-color: var(--green); }
+  .sk.c { color: var(--cyan); border-color: #1a3535; background: #091414; }
+  .sk.c:hover { background: #0d2020; border-color: var(--cyan); }
+  .sk.o { color: var(--orange); border-color: #352a1a; background: #14100a; }
+  .sk.o:hover { background: #20180d; border-color: var(--orange); }
+
+  /* Status panel */
+  .mission-box {
+    background: #080e08;
+    border-left: 2px solid var(--green);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: #d4d4d4;
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+  .pulse-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); flex-shrink: 0;
+    animation: pulse 1.4s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.8)} }
+  .pulse-txt { color: #d4d4d4; font-size: 13px; }
+
+  /* Links */
+  .link-row { display: flex; align-items: center; padding: 7px 0; border-bottom: 1px solid #0e1a0e; gap: 0; font-size: 13px; }
+  .link-row:last-child { border-bottom: none; }
+  .lk { color: var(--dim); min-width: 96px; flex-shrink: 0; }
+  .lsep { color: #2a2a2a; margin: 0 10px; flex-shrink: 0; }
+  .lv { color: var(--cyan); text-decoration: none; transition: color 0.15s; }
+  .lv:hover { color: var(--green); }
+
+  /* Footer */
+  .footer {
+    margin-top: 10px;
+    padding: 0 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #2a4a2a;
+  }
+
+  /* Responsive */
+  @media (max-width: 520px) {
+    .tbody { padding: 16px 16px 20px; }
+    .skill-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats { grid-template-columns: repeat(3, 1fr); }
+    .fk, .lk { min-width: 76px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-bar">
+    <span class="handle">timeless-debugger</span>
+    <span class="sep">//</span>
+    <span class="ip">192.168.x.x — Kolkata, IN</span>
+    <span style="margin-left:auto; color:#1a3a1a; font-size:11px;">TTY1 <span class="blink">▌</span></span>
+  </div>
+
+  <div class="terminal">
+    <div class="titlebar">
+      <span class="dot dot-r"></span>
+      <span class="dot dot-y"></span>
+      <span class="dot dot-g"></span>
+      <span class="win-title">soumyadip@kali: ~</span>
+    </div>
+    <div class="tbody">
+
+      <div class="prompt">
+        <span class="p-bracket">┌──(</span><span class="p-user">soumyadip</span><span class="p-at">㉿</span><span class="p-host">kali</span><span class="p-bracket">)-[</span><span class="p-path">~</span><span class="p-bracket">]</span><br>
+        <span class="p-bracket">└─</span><span class="p-dollar">$ </span><span class="p-cmd">cat about.txt</span><span class="cursor"></span>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="sw('info',this)"><span class="tbracket">[*]</span> info</button>
+        <button class="tab" onclick="sw('interests',this)"><span class="tbracket">[+]</span> interests</button>
+        <button class="tab" onclick="sw('skills',this)"><span class="tbracket">[~]</span> skills</button>
+        <button class="tab" onclick="sw('status',this)"><span style="color:#FF4444">[!]</span> status</button>
+      </div>
+
+      <!-- INFO -->
+      <div class="panel active" id="p-info">
+        <div class="field"><span class="fk">Name</span><span class="fsep">:</span><span class="fv">Soumyadip Manna</span></div>
+        <div class="field"><span class="fk">Role</span><span class="fsep">:</span><span class="fv">Aspiring Ethical Hacker <span class="g">&amp;</span> Penetration Tester</span></div>
+        <div class="field"><span class="fk">University</span><span class="fsep">:</span><span class="fv">University of Engineering and Management</span></div>
+        <div class="field"><span class="fk">Degree</span><span class="fsep">:</span><span class="fv">B.Tech <span class="c">in</span> Computer Science Engineering</span></div>
+        <div class="field"><span class="fk">GPA</span><span class="fsep">:</span><span class="fv"><span class="g">8.71</span> / 10.0</span></div>
+        <div class="field"><span class="fk">Location</span><span class="fsep">:</span><span class="fv">Kolkata, West Bengal, India</span></div>
+        <div class="field"><span class="fk">Email</span><span class="fsep">:</span><span class="fv"><span class="c">iamsmanna01@gmail.com</span></span></div>
+        <div class="field"><span class="fk">Status</span><span class="fsep">:</span><span class="fv">Actively hunting bugs <span class="g">&amp;</span> CTF flags 🚩</span></div>
+      </div>
+
+      <!-- INTERESTS -->
+      <div class="panel" id="p-interests">
+        <div class="sec-hdr">// attack domains</div>
+        <div class="tree">
+          <div class="ti"><span class="tp">├──</span><span class="tt">Penetration Testing <span class="g">&amp;</span> Red Teaming</span></div>
+          <div class="ti"><span class="tp">├──</span><span class="tt">Intrusion Detection <span class="g">&amp;</span> Incident Response</span></div>
+          <div class="ti"><span class="tp">├──</span><span class="tt">CTF Competitions <span style="color:#333">(Web, Forensics, Crypto, Rev)</span></span></div>
+          <div class="ti"><span class="tp">├──</span><span class="tt">Network Security <span class="g">&amp;</span> Traffic Analysis</span></div>
+          <div class="ti"><span class="tp">└──</span><span class="tt">Computer Vision <span class="g">&amp;</span> AI Security</span></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-n">3+</div><div class="stat-l">PLATFORMS</div></div>
+          <div class="stat"><div class="stat-n">20+</div><div class="stat-l">FLAGS</div></div>
+          <div class="stat"><div class="stat-n">8.71</div><div class="stat-l">GPA</div></div>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="panel" id="p-skills">
+        <div class="sec-hdr">// languages</div>
+        <div class="skill-grid">
+          <div class="sk">Python</div>
+          <div class="sk">Bash</div>
+          <div class="sk">Java</div>
+          <div class="sk">C</div>
+          <div class="sk">JavaScript</div>
+          <div class="sk">HTML5</div>
+        </div>
+        <div class="sec-hdr">// security arsenal</div>
+        <div class="skill-grid">
+          <div class="sk c">Kali Linux</div>
+          <div class="sk c">Burp Suite</div>
+          <div class="sk c">Wireshark</div>
+          <div class="sk c">Nmap</div>
+          <div class="sk c">Metasploit</div>
+          <div class="sk c">OWASP ZAP</div>
+        </div>
+        <div class="sec-hdr">// frameworks & tools</div>
+        <div class="skill-grid">
+          <div class="sk o">Flask</div>
+          <div class="sk o">OpenCV</div>
+          <div class="sk o">YOLOv8</div>
+          <div class="sk o">Scapy</div>
+          <div class="sk o">PyTorch</div>
+          <div class="sk o">VirtualBox</div>
+        </div>
+      </div>
+
+      <!-- STATUS -->
+      <div class="panel" id="p-status">
+        <div class="pulse-row">
+          <div class="pulse"></div>
+          <span class="pulse-txt">Host is <span style="color:var(--green)">UP</span> — all channels open</span>
+        </div>
+        <div class="mission-box">
+          Building real-world security tools<br>
+          <span style="color:var(--green)">&amp;</span> sharpening offensive skills
+        </div>
+        <div class="sec-hdr">// find me at</div>
+        <div class="link-row"><span class="lk">LinkedIn</span><span class="lsep">:</span><a class="lv" href="https://www.linkedin.com/in/soumyadip-manna-8bb131350/" target="_blank">soumyadip-manna-8bb131350</a></div>
+        <div class="link-row"><span class="lk">GitHub</span><span class="lsep">:</span><a class="lv" href="https://github.com/timeless-debugger" target="_blank">timeless-debugger</a></div>
+        <div class="link-row"><span class="lk">TryHackMe</span><span class="lsep">:</span><a class="lv" href="https://tryhackme.com/p/Soumyadip01" target="_blank">Soumyadip01</a></div>
+        <div class="link-row"><span class="lk">PicoCTF</span><span class="lsep">:</span><a class="lv" href="https://play.picoctf.org/users/Soumyadip_01" target="_blank">Soumyadip_01</a></div>
+        <div class="link-row"><span class="lk">HackTheBox</span><span class="lsep">:</span><a class="lv" href="https://app.hackthebox.com/profile/overview" target="_blank" style="color:#9FEF00">timeless-debugger</a></div>
+        <div class="link-row"><span class="lk">Email</span><span class="lsep">:</span><a class="lv" href="mailto:iamsmanna01@gmail.com">iamsmanna01@gmail.com</a></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>root@kali:~# <span class="blink">▌</span></span>
+    <span>© 2025 Soumyadip Manna</span>
+  </div>
+
+</div>
+<script>
+function sw(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('p-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
